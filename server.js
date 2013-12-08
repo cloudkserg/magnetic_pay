@@ -1,4 +1,5 @@
 var request = require('request');
+var md5 = require('MD5');
 
 var express = require('express');
 var app = express();
@@ -25,8 +26,11 @@ function create_signature(order)
 
 function check_order(order)
 {
-    for (var name in settings.initParams) { if (!order[name]) return false; } 
-    return true;
+    var result = true
+    settings.initParams.forEach(function (name) {
+        if (!order[name]) result = false
+    });
+    return result;
 }
 
 function create_order(params)
@@ -55,11 +59,11 @@ function init_request(order, res)
 }
 
 app.get('/init', function(req, res){
-    var order = create_order(req.params);
+    var order = create_order(req.query);
     if (order) {
         init_request(order, res);
     } else {
-        res.send(500, 'Not good params!!, params = ' + req.params);
+        res.send(500, 'Not good params!!');
     }
 });
 
