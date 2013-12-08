@@ -9,8 +9,8 @@ var settings = {
         currencyId: 'RUB',
     },
     initParams: ['merchantId', 'amount', 'currencyId', 'ref', 'memo'],
-    merchantSecretKey: '',
-    initUrl: '',
+    merchantSecretKey: 'xxx',
+    initUrl: 'https://sandbox.magnetic-pay.com/',
 
 }
 
@@ -19,7 +19,8 @@ function create_signature(order)
     var signature = '';
     for (var name in settings.initParams) { signature += order[name]}
     signature += settings.merchantSecretKey
-    return signature;
+
+    return md5(signature);
 }
 
 function check_order(order)
